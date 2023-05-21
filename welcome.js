@@ -1,62 +1,35 @@
-window.onchange = function () {
-
-    document.getElementById('loginBtn').addEventListener('click', login);
-    document.getElementById('logout').addEventListener('click', logout);
+window.onload = function () {
+    document.getElementById("logoutBtn").onclick = logout;
+    fetchAllSongs();
+    init();
 }
 
-async function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({
-            username,
-            password
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (response.ok) {
-        const result = await response.json();
-        sessionStorage.setItem('token', result.accessToken);
-        sessionStorage.setItem('username', result.username);
-        document.getElementById('main-div').style.display = 'none';
-        document.getElementById('main-div2').style.display = 'block';
-        document.getElementById('logout').style.display = 'block';
-        //document.getElementById("favorites").style.display = 'block';
-        //document.getElementById('play').style.display = 'block';
-        document.getElementById('table-div').style.display = 'block';
-
-        fetchAllSongs();
-
-
-
-    } else {
-        document.getElementById('errorMsg').innerText = 'Incorrect username and password';
-    }
-
+function init() {
+    document.getElementById("username").innerText =
+        sessionStorage.getItem("username");
 }
 
-
-let musicList = null;
-
+function logout() {
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("token");
+    location.href = "index.html";
+}
+let musicList;
 async function fetchAllSongs() {
-    let response = await fetch("http://localhost:3000/api/music", {
+    let result = await fetch("http://localhost:3000/api/music", {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
     })
-    let songs = await response.json();
-    musicList = songs;
-    printAllSongs(songs);
+    let song = await result.json();
+    musicList = song;
+    console.log(musicList);
+    printAllSongs(song);
 };
+
 
 //Display all songs
 //=================================================================================================================//
-let count = 1;
 function printAllSongs(list) {
     for (let each of list) {
         fetch(`http://localhost:3000/${each.urlPath}`, {
@@ -64,25 +37,26 @@ function printAllSongs(list) {
                 Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
         }).then((songs) => {
+
             let myTable = `
-            <tr>
-            <td>${count++}</td>
-            <td><a href="${songs.url}">${each.title}</a><br></td>
-            <td>${each.releaseDate}</td>
-            <td><button class="addBtn" id=${each.id} onclick="addToFavorites('${each.id}')">+</button></td>
-            </tr>
-           `;
-            document.getElementById("myTable").innerHTML += myTable;
+          <tr>
+          <td><a href="${songs.url}">${each.title}</a><br></td>
+          <td><button class="addBtn" id=${each.id} onclick="addToFavorites('${each.id}')">+</button></td>
+          </tr>
+         `;
+            document.getElementById("playlist").innerHTML += myTable;
         });
     }
 }
+
+
+
 
 //Add to favorite list
 //=================================================================================================================//
 let myFavoriteMusicList = [];
 
 let index = 0;
-let countt = 1;
 function addToFavorites(id) {
     for (let each of musicList) {
         if (each.id == id) {
@@ -95,18 +69,16 @@ function addToFavorites(id) {
                         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
                     },
                 }).then((music) => {
-                    let id = music.id;
+                    let id = each.id;
                     let title = each.title;
                     let url = music.url;
                     let myFavoriteTable = `
-      
-        <tr>
-          <td>${countt++}</td>
-              <td><a href="${music.url}">${each.title}</a><br></td>
-              <td><button class="addBtn" id=${each.id} onclick="removeToFavorites('${each.id}')">X</button>
-               <button class="addBtn" onclick="playMusic('${music.url}','${each.title}','${index}')">play</button></td>
-          </tr>
-        `;
+            <tr id=${each.id}>
+                <td><a href="${music.url}">${each.title}</a><br></td>
+                <td><button class="addBtn" id=${each.id} onclick="removeToFavorites('${each.id}')">Remove</button></td>
+                <td> <button class="addBtn" onclick="playMusic('${music.url}','${each.title}','${index}')">play</button></td>
+            </tr>
+          `;
                     //========================================================================================//
                     fetch(`http://localhost:3000/${each.urlPath}`, {
                         method: "POST",
@@ -119,17 +91,28 @@ function addToFavorites(id) {
                             "Content-Type": "application/json",
                         },
                     })
+                    // .then((response) => response.json())
+                    // .then((item) => {
+                    //   print.innerHTML += `
+                    //         id:  ${item.id} <br> 
+                    //         name: ${item.title} <br> 
+                    //         price: ${item.price} <br>
+                    //         description: ${item.description}<br> ==========================<br>`;
+                    // })
+                    //=======================================================================================//
                     index++;
 
-                    document.getElementById("myFavoriteTable").innerHTML += myFavoriteTable;
+                    document.getElementById("favorites").innerHTML += myFavoriteTable;
                 });
             }
         }
     }
 }
-//   <tr id=${each.id}>
+
+let playingMusicIndex = null;
+
 async function playMusic(music, title, id) {
-    document.getElementById("musicName").innerHTML = title;
+    document.getElementById("musicTitle").innerHTML = title;
     document.getElementById("play").src = music;
     playingMusicIndex = id;
 
@@ -150,7 +133,7 @@ async function playMusic(music, title, id) {
             playingMusicIndex = 0;
         }
         audio.src = arr[playingMusicIndex];
-        document.getElementById("musicName").innerHTML =
+        document.getElementById("musicTitle").innerHTML =
             musicList[playingMusicIndex].title;
     };
     console.log(myFavoriteMusicList);
@@ -161,18 +144,18 @@ async function playMusic(music, title, id) {
 function removeToFavorites(id) {
     myFavoriteMusicList = myFavoriteMusicList.filter((myFav) => myFav.id != id);
     document.getElementById(id);
-    document.getElementById("myFavoriteTable");
+    document.getElementById("favorites");
     createTable(myFavoriteMusicList);
 }
-let count3 = 1;
+
 function createTable(property) {
-    document.getElementById("myFavoriteTable").innerHTML = `
-    <tr>
-    <th>ID</th>
-    <th>Order </th>
-    <th>Action</th>    
-    </tr>
-        `;
+    document.getElementById("favorites").innerHTML = `
+          <tr>
+              <th>Favorites Song</th>
+              <th>remove from list</th>
+              <th>play</th>
+          </tr>
+    `;
 
     for (let each of property) {
         fetch(`http://localhost:3000/${each.urlPath}`, {
@@ -181,16 +164,17 @@ function createTable(property) {
             },
         }).then((music) => {
             let myFavoriteTable = `
-            <td>${count3++}</td>
-            <td><a href="${music.url}">${each.title}</a><br></td>
-            <td><button class="addBtn" id=${each.id} onclick="removeToFavorites('${each.id}')">X</button>
-             <button class="addBtn" onclick="playMusic('${music.url}','${each.title}','${index}')">play</button></td>
+            <tr id=${each.id}>
+                <td><a href="${music.url}">${each.title}</a><br></td>
+                <td><button class="addBtn" id=${each.id} onclick="removeToFavorites('${each.id}')">Remove</button></td>
+                <td> <button class="addBtn" onclick="playMusic('${music.url}','${each.title}')">play</button></td>
+            </tr>
           `;
-            document.getElementById("myFavoriteTable").innerHTML += myFavoriteTable;
+            document.getElementById("favorites").innerHTML += myFavoriteTable;
         });
     }
-
 }
+
 //Play Next
 //=================================================================================================================//
 
@@ -215,10 +199,10 @@ next.onclick = async function () {
                 },
             }
         );
-        document.getElementById("musicName").innerHTML = "";
+        document.getElementById("musicTitle").innerHTML = "";
         document.getElementById("play").src = "";
 
-        document.getElementById("musicName").innerHTML =
+        document.getElementById("musicTitle").innerHTML =
             myFavoriteMusicList[nextMusic].title;
         document.getElementById("play").src = nextPlay.url;
         playingMusicIndex = nextMusic;
@@ -227,7 +211,7 @@ next.onclick = async function () {
 
 //Play previous
 //=================================================================================================================//
-let previous = document.getElementById("previous");
+let previous = document.getElementById("priv");
 
 previous.onclick = async function () {
     let playPriv = playingMusicIndex;
@@ -250,10 +234,10 @@ previous.onclick = async function () {
             }
         );
 
-        document.getElementById("musicName").innerHTML = "";
+        document.getElementById("musicTitle").innerHTML = "";
         document.getElementById("play").src = "";
 
-        document.getElementById("musicName").innerHTML =
+        document.getElementById("musicTitle").innerHTML =
             myFavoriteMusicList[playPriv].title;
         document.getElementById("play").src = nextPlay.url;
         playingMusicIndex = playPriv;
@@ -297,7 +281,7 @@ shuffle.onclick = async function () {
         } else {
             playingMusicIndex = randNum;
             audio.src = arr[playingMusicIndex];
-            document.getElementById("musicName").innerHTML =
+            document.getElementById("musicTitle").innerHTML =
                 myFavoriteMusicList[playingMusicIndex].title;
         }
     };
@@ -323,34 +307,9 @@ repeat.onclick = async function () {
         let audio = document.getElementById("play");
         audio.onended = () => {
             audio.src = repeatSong.url;
-            document.getElementById("musicName").innerHTML = "";
-            document.getElementById("musicName").innerHTML =
+            document.getElementById("musicTitle").innerHTML = "";
+            document.getElementById("musicTitle").innerHTML =
                 myFavoriteMusicList[playingMusicIndex].title;
         };
     }
 };
-
-
-function logout() {
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("token");
-    document.getElementById('main-div2').innerHTML = '';
-    //document.getElementById('table-div').innerHTML = '';
-    document.getElementById('main-div2').style.display = 'none';
-    document.getElementById('logout').style.display = 'none';
-    //document.getElementById("favorites").style.display = 'none';
-
-
-    // document.getElementById('play').style.display = 'none';
-    // document.getElementById('priv').style.display = 'none';
-    // document.getElementById('next').style.display = 'none';
-    // document.getElementById('shuffle').style.display = 'none';
-    // document.getElementById('repeat').style.display = 'none';
-
-    document.getElementById('main-div').style.display = 'block';
-
-    location.reload();
-
-
-
-}

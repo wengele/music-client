@@ -1,36 +1,92 @@
-body {
-    background-image: URL('https://cdn.pixabay.com/photo/2013/11/03/08/05/cheers-204742_1280.jpg');
-    background-size: cover;
+#errorMsg {
+    color: red;
 }
 
-#Pass,
+body {
+
+    background-image: URL('https://cdn.pixabay.com/photo/2015/12/24/02/14/music-1106439_1280.jpg');
+    background-size: cover;
+
+}
+
+#pass,
 #user {
     color: aliceblue;
-
 }
 
-#main-div {
-    padding: 10px;
-    margin-right: -10px 0px 0px 0px;
+#main {
+    padding-top: 10px;
+    margin: -10px -10px 0px -10px;
     text-align: right;
     justify-content: space-between;
     display: flex;
-    border: solid rgb(33, 42, 42);
-    background-color: rgb(40, 37, 37);
-    border-left: -10px;
-    border-right: -10px
+    border: solid rgb(221, 212, 212);
+    background-color: rgb(221, 212, 212);
+    color: palevioletred;
+    /* border-left: -10px;
+    border-right: -10px */
 }
+
+#user,
+#pass {
+    color: black;
+}
+
+#loginBtn,
+#logout {
+    background-color: rgb(232, 240, 240);
+    border-radius: 4px;
+}
+
 
 #img {
     width: 50px;
     height: 50px;
+
 }
 
 #input {
     padding-top: 10px;
+
 }
 
 #h1 {
     color: rgb(125, 62, 95);
     font-weight: bold;
+
+}
+
+#playlist {
+    border: 2px solid red;
+}
+
+#myTable,
+#myFavoriteTable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse important !;
+    gap: 0px;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid hwb(193 10% 21%);
+    text-align: left;
+    padding: -8px;
+    background: #c6b5b5;
+    color: black;
+}
+
+tr:nth-child(even) {
+    background-color: #ab1919;
+
+}
+
+#musicPlayer {
+
+    display: flex;
+    background-color: #eaeaea;
+    padding: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
 }
