@@ -11,112 +11,98 @@
 </head>
 
 <body>
-    <div id="main">
-
-
+    <!--first page-->
+    <div id="first-page" style="display: none;">
         <div>
-            <img src="https://img.icons8.com/?size=2x&id=80829&format=png" alt="" style="width:40px;height:40px">PLAY
-            POP
+            <img src="https://img.icons8.com/?size=2x&id=80829&format=png" alt="" style="width:40px;height:40px">Play
+            Favorites
         </div>
         <div id="main-div">
-
             <label for="" id="user">username:<input id="username" placeholder="username" /></label>
             <label for="" id="pass">password: <input id="password" type="password" placeholder="password" /></label>
             <button id="loginBtn">Login</button>
 
             <span id="errorMsg"></span>
         </div>
-        <button id="logout" style="display:none">Logout</button>
     </div>
 
+    <!--second page-->
+    <div id="second-page" style="display: none;">
+        <div id="main">
 
-
-
-    <div id="main-div2" style="display: none;">
-
-
-
-        <div id="table-div">
-            <h1 style="text-decoration-style: wavy;color:red">Songs you may intersted</h1>
-            <table id="myTable">
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Release Date</th>
-                    <th>ADD</th>
-                </tr>
-            </table>
-            <h1>
-                Your playlist
-            </h1>
-            <table id="myFavoriteTable">
-                <th>ID</th>
-                <th>Order </th>
-                <th>Action</th>
-
-            </table>
-        </div>
-        <!-- <div id="favorites">
             <div>
-                
-
-
-                <audio controls autoplay id="play" gggggg>
-
-                    <button id="priv"><img src="prev.png" alt="" width="20px"></button>
-                    <button id="next"><img src="next.png" alt="" width="20px"></button>
-
-                    <button id="shuffle"><img src="shuffle.png" alt="" width="20px"></button>
-                    <button id="repeat" style="display:none;"><img src="repete.png" alt="" width="20px"></button>
-
-                </audio>
-
+                <img src="https://img.icons8.com/?size=2x&id=80829&format=png" alt=""
+                    style="width:40px;height:40px">Play
+                Favorites
             </div>
-
-
-        </div> -->
-        <div>
-            <marquee id="musicName"></marquee>
+            <button id="logout">Logout</button>
         </div>
+        <div id="main-div2">
+            <div id="table-div">
+                <h1 style="text-decoration-style: wavy;color:red">Songs you may intersted</h1>
+                Search<input type="search" id="searchMusic" placeholder="search your favorites?"
+                    style="width:px;padding: 0 6px">
+                <table id="myTable">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Release Date</th>
+                        <th>ADD</th>
+                    </tr>
+                </table>
+                <h1 style="color:red">
+                    Your playlist
+                </h1>
+                <table id="myFavoriteTable">
+                    <th>ID</th>
+                    <th>Order </th>
+                    <th>Action</th>
 
-
-        <div id="musicPlayer">
-
-                <div class="player-buttons">
-
-                        <button id="previous">Previous</button>
-
-                        <button id="next">Next</button>
-
-                    </div>
-
-
-
-
-                <div class="music-player">
-
-                        <audio controls autoPlay id="play" style="width: 800px;margin-left: 30px;">
-
-                               
-                    <source src="song1.mp3" type="audio/mpeg">
-
-                           
-                </audio>
-
-                    </div>
-
-                   
-
-                    <div>
-
-                            <button id="shuffle">Shuffle</button>
-                <button id="repeat">Repeat</button>
-
-                       
+                </table>
             </div>
 
-               
+            <div class="slider">
+                <span class="slide-text" id="musicName"></span>
+            </div>
 
+
+            <div id="musicPlayer">
+
+                <div class="player-buttons">
+                    <button id="previous" onclick="prevBtn()"><img
+                            src="https://img.icons8.com/?size=512&id=37588&format=png" alt=""
+                            style="width:30px;height:30px;"></button>
+                    <button id="next-Button" onclick="nextButton()"><img
+                            src="https://img.icons8.com/?size=512&id=3Yrvxt0BSudc&format=png" alt=""
+                            style="width:28px;height:28px;"></button>
+                </div>
+
+                <div class="music-player">
+
+                    <audio controls autoPlay id="play" style="width: 800px;margin-left: 30px;">
+
+                        <!--            
+                        <source src="song1.mp3" type="audio/mpeg"> -->
+
+
+                    </audio>
+
+                </div>
+                <div>
+
+                    <button id="shuffleBtn" onclick="shuffle()"><img
+                            src="https://img.icons8.com/?size=512&id=7Iho6fNm4wNS&format=png" alt=""
+                            style="width:30px;height:30px;"></button>
+                    <button id="repeatBtn" onclick="repeat()"><img
+                            src="https://img.icons8.com/?size=512&id=fUY8Y23ztpe5&format=png" alt=""
+                            style="width:30px;height:30px;"></button>
+
+                    <!--  <button id="repeatAl" onclick=" repeatAll()">RepeatAll</button> -->
+                </div>
+
+
+
+            </div>
         </div>
     </div>
 

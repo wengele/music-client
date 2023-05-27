@@ -23,8 +23,7 @@ body {
     border: solid rgb(221, 212, 212);
     background-color: rgb(221, 212, 212);
     color: palevioletred;
-    /* border-left: -10px;
-    border-right: -10px */
+
 }
 
 #user,
@@ -36,6 +35,7 @@ body {
 #logout {
     background-color: rgb(232, 240, 240);
     border-radius: 4px;
+
 }
 
 
@@ -89,4 +89,36 @@ tr:nth-child(even) {
     padding: 10px;
     margin-bottom: 10px;
     justify-content: space-between;
+}
+
+.slider {
+    width: 100%;
+    overflow: hidden;
+}
+
+.slide-text {
+    animation: slide 10s infinite;
+    display: inline-block;
+    white-space: nowrap;
+    color: red;
+    text-decoration-style: wavy;
+    font-size: larger;
+    border: 1px solid greenyellow;
+    background-color: aliceblue;
+
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(1500%);
+    }
+}
+
+
+audio {
+    color: green;
 }
