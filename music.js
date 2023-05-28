@@ -1,3 +1,6 @@
+
+
+
 window.onload = function () {
     if (sessionStorage.getItem('token')) {
         renderSecondPage();
